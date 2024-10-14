@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javafx.geometry.Insets;
@@ -194,8 +195,10 @@ public class UIController {
         // Iterate over masterTable and sort entries into their respective groups
         for (Map.Entry<String, Object> entry : masterTable.entrySet()) {
             String key = entry.getKey();
-            String value = entry.getValue().toString();
-            TreeItem<String> itemNode = new TreeItem<>(key + " : " + value);
+            Object value = entry.getValue();
+            String valueString = decodeValue(value);
+
+            TreeItem<String> itemNode = new TreeItem<>(key + " : " + valueString);
 
             // Sort entries into respective groups
             if (key.contains("Swerve")) {
@@ -266,6 +269,25 @@ public class UIController {
         for (TreeItem<String> child : item.getChildren()) {
             restoreExpandedStates(child, expandedStates, currentPath);
         }
+    }
+
+    // Helper method to decode entries
+    private static String decodeValue(Object value) {
+        String valueString;
+        if (value instanceof String[]) {
+            valueString = Arrays.toString((String[]) value);
+        } else if (value instanceof double[]) {
+            valueString = Arrays.toString((double[]) value);
+        } else if (value instanceof boolean[]) {
+            valueString = Arrays.toString((boolean[]) value);
+        } else if (value instanceof List) {
+            valueString = value.toString();  // Lists have good toString()
+        } else if (value != null) {
+            valueString = value.toString();  // Handle other types
+        } else {
+            valueString = "null";
+        }
+        return valueString;
     }
 
 }

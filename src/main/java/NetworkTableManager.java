@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -46,17 +47,26 @@ public final class NetworkTableManager {
     }
 
     public static Object getValue(String topic) {
-        
+
         Object valueObject = masterTable.get(topic);
 
         if (valueObject == null) {
-            return null; 
+            return null;
         }
-    
+
         if (valueObject instanceof String || valueObject instanceof Number || 
-            valueObject instanceof Boolean || valueObject instanceof byte[] ||
-            valueObject instanceof List || valueObject instanceof Map) {
+            valueObject instanceof Boolean || valueObject instanceof byte[]) {
             return valueObject;
+        } else if (valueObject instanceof String[]) {
+            return Arrays.toString((String[]) valueObject);
+        } else if (valueObject instanceof double[]) {
+            return Arrays.toString((double[]) valueObject);
+        } else if (valueObject instanceof boolean[]) {
+            return Arrays.toString((boolean[]) valueObject);
+        } else if (valueObject instanceof List) {
+            return valueObject.toString();
+        } else if (valueObject instanceof Map) {
+            return valueObject.toString();
         } else {
             System.err.println("Unhandled type: " + valueObject.getClass().getName());
             return valueObject.toString();

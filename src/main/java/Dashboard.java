@@ -1,4 +1,3 @@
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -59,18 +58,19 @@ public class Dashboard extends Application{
 
             NetworkTableManager.populateMasterTable();
 
-            Map<String, Object> masterTable = NetworkTableManager.getMasterTable();
             // // Update dashboard on the JavaFX Application Thread
-            Platform.runLater(() -> updateNTTree(networkTableViewer.getRoot(), masterTable));
+            Platform.runLater(() -> updateNTTree(networkTableViewer.getRoot()));
 
             Platform.runLater(() -> updateRobotPos());
             Platform.runLater(() -> updateStatusBar());
 
+            Platform.runLater(() -> updateAutoSelector());
+
         }, 0, 100, TimeUnit.MILLISECONDS);
     }
 
-    private void updateNTTree(TreeItem<String> rootItem, Map<String, Object> masterTable) {
-        UIController.organizeNTTreeData(rootItem, masterTable);
+    private void updateNTTree(TreeItem<String> rootItem) {
+        UIController.organizeNTTreeData(rootItem, NetworkTableManager.getMasterTable());
     }
 
     private void updateRobotPos() {
@@ -96,6 +96,11 @@ public class Dashboard extends Application{
     private void updateStatusBar() {
         boolean isConnected = NetworkTableManager.isConnected();
         UIController.updateStatusBar(isConnected);
+    }
+
+    private void updateAutoSelector() {
+        Object autoSelectionOptions = NetworkTableManager.getValue("/Shuffleboard/SmartDashboard/Auto Selector/options");
+        System.out.println(autoSelectionOptions);
     }
 
     public static void main(String[] args) {
