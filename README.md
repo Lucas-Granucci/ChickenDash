@@ -19,8 +19,8 @@ A simple dashboard for interfacing with a robot for FIRST robotics
 
 2. **Clone the repository:**  
    ```bash
-   git clone <repository-url>
-   cd Chicken-Dashboard
+   git clone https://github.com/LucasG2008/ChickenDash.git
+   cd ChickenDash
    ```
 
 3. **Build the project using Maven**
