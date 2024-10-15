@@ -59,12 +59,11 @@ public class Dashboard extends Application{
 
             NetworkTableManager.populateMasterTable();
 
-            // // Update dashboard on the JavaFX Application Thread
+            // Update dashboard on the JavaFX Application Thread
             Platform.runLater(() -> updateNTTree(networkTableViewer.getRoot()));
 
             Platform.runLater(() -> updateRobotPos());
             Platform.runLater(() -> updateStatusBar());
-
             Platform.runLater(() -> updateAutoSelector());
 
         }, 0, 100, TimeUnit.MILLISECONDS);
@@ -107,6 +106,11 @@ public class Dashboard extends Application{
             String selectedItem = UIController.updateAutoSelector(Arrays.asList(stringAutoSelectionOptions));
             NetworkTableManager.publishValue("string", "/Shuffleboard/SmartDashboard/Auto Selector/selected", selectedItem);
         }
+    }
+
+    private void printNTValue(String topicName) {
+        Object ntValue = NetworkTableManager.getValue(topicName);
+        System.out.println(ntValue);
     }
 
     public static void main(String[] args) {

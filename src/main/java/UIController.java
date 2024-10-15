@@ -3,12 +3,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
@@ -26,6 +29,7 @@ public class UIController {
 
     // Declare UI elements as instance variables
     private static Label robotStatus;
+    private static Button connectButton;
     private static ComboBox<String> autoSelector;
 
     // **************************** DISPLAY ELEMENTS **************************** //
@@ -37,6 +41,18 @@ public class UIController {
         topBar.setStyle("-fx-background-color: #2c3e50;");
 
         robotStatus = new Label("Robot: Connected");
+
+        TextField teamNumIPField = new TextField("localhost");
+
+        connectButton = new Button("Connect");
+        EventHandler<ActionEvent> connectEvent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                System.out.println("Connecting with id: " + teamNumIPField.getText());
+                NetworkTableManager.connectToNetworkTables(teamNumIPField.getText());
+            }
+        };
+        connectButton.setOnAction(connectEvent);
+
         Label battery = new Label("Battery: 99V");
         Label timer = new Label("Timer: 0:00");
 
@@ -44,7 +60,7 @@ public class UIController {
         battery.setStyle("-fx-text-fill: white;");
         timer.setStyle("-fx-text-fill: white;");
 
-        topBar.getChildren().addAll(robotStatus, battery, timer);
+        topBar.getChildren().addAll(robotStatus, teamNumIPField, connectButton, battery, timer);
         return topBar;
     }
 
@@ -94,7 +110,7 @@ public class UIController {
 
         // Mode selector
         ComboBox<String> modeSelector = new ComboBox<>();
-        modeSelector.getItems().addAll("Auto", "Teleop", "Test");
+        modeSelector.getItems().addAll("Disconnected", "Disabled", "Autonomous", "Teleoperated", "Test");
         modeSelector.setValue("Teleop");
 
         // Auto selector
@@ -170,6 +186,7 @@ public class UIController {
         if (!autoSelector.getItems().equals(autoSelectionOptions)) {
             autoSelector.getItems().clear();
             autoSelector.getItems().addAll(autoSelectionOptions);
+            autoSelector.getSelectionModel().selectFirst();
         }
 
         return autoSelector.getValue();

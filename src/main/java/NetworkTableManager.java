@@ -22,10 +22,12 @@ public final class NetworkTableManager {
 
     private NetworkTableManager() {}
 
-    static {
+    public static void connectToNetworkTables(String teamNumIP) {
+
+        ntInst.disconnect();
 
         ntInst.startClient4("Chicken Dash Client");
-        ntInst.setServer("localhost", NetworkTableInstance.kDefaultPort4);
+        ntInst.setServer(teamNumIP, NetworkTableInstance.kDefaultPort4);
 
         ntInst.addListener(
             new String[] {""},
