@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -100,7 +101,12 @@ public class Dashboard extends Application{
 
     private void updateAutoSelector() {
         Object autoSelectionOptions = NetworkTableManager.getValue("/Shuffleboard/SmartDashboard/Auto Selector/options");
-        System.out.println(autoSelectionOptions);
+
+        if (autoSelectionOptions != "Unassigned value" && autoSelectionOptions != null) {
+            String[] stringAutoSelectionOptions = (String[]) autoSelectionOptions;
+            String selectedItem = UIController.updateAutoSelector(Arrays.asList(stringAutoSelectionOptions));
+            NetworkTableManager.publishValue("string", "/Shuffleboard/SmartDashboard/Auto Selector/selected", selectedItem);
+        }
     }
 
     public static void main(String[] args) {

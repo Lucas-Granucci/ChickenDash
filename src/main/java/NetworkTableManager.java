@@ -1,20 +1,22 @@
-import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import edu.wpi.first.networktables.GenericPublisher;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableEvent;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.networktables.Topic;
 
 public final class NetworkTableManager {
 
     private static final Map<String, Object> masterTable = new ConcurrentHashMap<>();
+
     private static final Set<String> topics = new CopyOnWriteArraySet<>();
+    private static final Map<String, GenericPublisher> publisherCache = new ConcurrentHashMap<>();
 
     private static final NetworkTableInstance ntInst = NetworkTableInstance.getDefault();
 
@@ -47,34 +49,30 @@ public final class NetworkTableManager {
     }
 
     public static Object getValue(String topic) {
-
         Object valueObject = masterTable.get(topic);
-
-        if (valueObject == null) {
-            return null;
-        }
-
-        if (valueObject instanceof String || valueObject instanceof Number || 
-            valueObject instanceof Boolean || valueObject instanceof byte[]) {
-            return valueObject;
-        } else if (valueObject instanceof String[]) {
-            return Arrays.toString((String[]) valueObject);
-        } else if (valueObject instanceof double[]) {
-            return Arrays.toString((double[]) valueObject);
-        } else if (valueObject instanceof boolean[]) {
-            return Arrays.toString((boolean[]) valueObject);
-        } else if (valueObject instanceof List) {
-            return valueObject.toString();
-        } else if (valueObject instanceof Map) {
-            return valueObject.toString();
-        } else {
-            System.err.println("Unhandled type: " + valueObject.getClass().getName());
-            return valueObject.toString();
-        }
+        return valueObject;
     }
 
     public static Map<String, Object> getMasterTable() {
         return masterTable;
+    }
+
+    public static void publishValue(String topicType, String topicName, Object newValue) {
+
+        GenericPublisher publisher = publisherCache.computeIfAbsent(topicName, key -> {
+            Topic topic = ntInst.getTopic(topicName);
+            System.out.println(topic.getName());
+            return topic.genericPublish(topicType);
+        });
+
+        NetworkTableValue ntValue = creatNetworkTableValue(topicType, newValue);
+
+        if (ntValue != null) {
+            if (!ntValue.equals(masterTable.get(topicName))) {
+                publisher.set(ntValue);
+            }
+        }
+
     }
 
     public static boolean isConnected() {
@@ -98,5 +96,19 @@ public final class NetworkTableManager {
             case kUnassigned: return "Unassigned value";
             default: return "unknown type";
         }
+    }
+
+    private static NetworkTableValue creatNetworkTableValue(String topicType, Object newValue) {
+        NetworkTableValue ntValue = switch (topicType) {
+            case "string" -> NetworkTableValue.makeString((String) newValue);
+            case "int"    -> NetworkTableValue.makeInteger((Integer) newValue);
+            case "double" -> NetworkTableValue.makeDouble((Double) newValue);
+            case "boolean" -> NetworkTableValue.makeBoolean((Boolean) newValue);
+            default -> {
+                System.out.println("Unsupported topic type: " + topicType);
+                yield null;
+            }
+        };
+        return ntValue;
     }
 }

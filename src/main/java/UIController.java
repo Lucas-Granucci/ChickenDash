@@ -26,6 +26,7 @@ public class UIController {
 
     // Declare UI elements as instance variables
     private static Label robotStatus;
+    private static ComboBox<String> autoSelector;
 
     // **************************** DISPLAY ELEMENTS **************************** //
 
@@ -97,7 +98,7 @@ public class UIController {
         modeSelector.setValue("Teleop");
 
         // Auto selector
-        ComboBox<String> autoSelector = new ComboBox<>();
+        autoSelector = new ComboBox<>();
         autoSelector.getItems().addAll("Auto 1", "Auto 2", "Auto 3");
         autoSelector.setValue("Auto 1");
 
@@ -162,6 +163,16 @@ public class UIController {
         if (robotStatus != null) {
             robotStatus.setText("Robot: " + (isConnected ? "Connected" : "Disconnected"));
         }
+    }
+
+    public static String updateAutoSelector(List<String> autoSelectionOptions) {
+
+        if (!autoSelector.getItems().equals(autoSelectionOptions)) {
+            autoSelector.getItems().clear();
+            autoSelector.getItems().addAll(autoSelectionOptions);
+        }
+
+        return autoSelector.getValue();
     }
 
     public static void organizeNTTreeData(TreeItem<String> rootItem, Map<String, Object> masterTable) {
