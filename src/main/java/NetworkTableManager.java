@@ -96,7 +96,7 @@ public final class NetworkTableManager {
             case kStringArray: return ntValue.getStringArray();
             case kRaw: return ntValue.getRaw();
             case kUnassigned: return "Unassigned value";
-            default: return "unknown type";
+            default: return "Unknown type: " + ntValue.getType();
         }
     }
 

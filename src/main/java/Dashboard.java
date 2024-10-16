@@ -110,7 +110,7 @@ public class Dashboard extends Application{
 
     private void printNTValue(String topicName) {
         Object ntValue = NetworkTableManager.getValue(topicName);
-        System.out.println(ntValue);
+        System.out.println("Topic name: " + topicName + " : " + ntValue);
     }
 
     public static void main(String[] args) {
