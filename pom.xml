@@ -23,13 +23,15 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>edu.wpi.first.ntcore</groupId>
-            <artifactId>ntcore-java</artifactId>
+            <groupId>edu.wpi.first.wpilibj</groupId>
+            <artifactId>wpilibj-java</artifactId>
             <version>${wpilib.version}</version>
         </dependency>
+
+        <!-- WPILib NTCORE -->
         <dependency>
-            <groupId>edu.wpi.first.wpiutil</groupId>
-            <artifactId>wpiutil-java</artifactId>
+            <groupId>edu.wpi.first.ntcore</groupId>
+            <artifactId>ntcore-java</artifactId>
             <version>${wpilib.version}</version>
         </dependency>
         <dependency>
@@ -38,12 +40,20 @@
             <version>${wpilib.version}</version>
             <classifier>windowsx86-64</classifier>
         </dependency>
+
+        <!-- WPILib WPIUTIL -->
+        <dependency>
+            <groupId>edu.wpi.first.wpiutil</groupId>
+            <artifactId>wpiutil-java</artifactId>
+            <version>${wpilib.version}</version>
+        </dependency>
         <dependency>
             <groupId>edu.wpi.first.wpiutil</groupId>
             <artifactId>wpiutil-jni</artifactId>
             <version>${wpilib.version}</version>
             <classifier>windowsx86-64</classifier>
         </dependency>
+
         <!-- JavaFX dependencies -->
         <dependency>
             <groupId>org.openjfx</groupId>

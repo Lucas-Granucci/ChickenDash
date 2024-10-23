@@ -1,17 +1,11 @@
 /Shuffleboard/SmartDashboard/Auto Selector/selected
-/FMSInfo/.type
-/FMSInfo/GameSpecificMessage
-/FMSInfo/IsRedAlliance
-/FMSInfo/StationNumber
-/FMSInfo/FMSControlData
-/FMSInfo/EventName
-/FMSInfo/MatchNumber
-/FMSInfo/ReplayNumber
-/FMSInfo/MatchType
 /LiveWindow/.status/LW Enabled
 /Shuffleboard/.metadata/Selected
 /Shuffleboard/.recording/RecordData
 /Shuffleboard/.recording/FileNameFormat
+/photonvision/ApriltagCamera1/driverModeRequest
+/photonvision/ApriltagCamera1/pipelineIndexRequest
+/photonvision/ledModeRequest
 /Shuffleboard/.metadata/Tabs
 /Shuffleboard/SmartDashboard/.type
 /Shuffleboard/Move PID/.type
@@ -32,14 +26,12 @@
 /Shuffleboard/Shooter/Flywheel Targeted RPM
 /Shuffleboard/Shooter/Top Flywheel Vector
 /Shuffleboard/Shooter/Bottom Flywheel Vector
+/Shuffleboard/Shooter/Shooter Distance
 /Shuffleboard/Climber/Left Climber State
 /Shuffleboard/Climber/Right Climber State
 /Shuffleboard/Shooter/Pivot Angle
 /Shuffleboard/Shooter/Pivot Target Angle
 /Shuffleboard/Positions/Swerve Position
-/.schema/struct:SwerveModuleState
-/.schema/struct:Rotation2d
-SwerveStates
 /Shuffleboard/SmartDashboard/Field View/.controllable
 /Shuffleboard/SmartDashboard/Field View/.type
 /Shuffleboard/SmartDashboard/Field View/Robot
@@ -141,3 +133,38 @@ SwerveStates
 /Shuffleboard/SmartDashboard/Trajectory State/.controllable
 /Shuffleboard/SmartDashboard/Trajectory State/.type
 /Shuffleboard/SmartDashboard/Trajectory State/Robot
+/photonvision/ledModeState
+/photonvision/version
+/photonvision/buildDate
+/photonvision/ApriltagCamera1/inputSaveImgCmd
+/photonvision/ApriltagCamera1/outputSaveImgCmd
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/source
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/description
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/connected
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/streams
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/mode
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/modes
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/source
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/description
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/connected
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/streams
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/mode
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/modes
+/.schema/proto:geometry3d.proto
+/.schema/proto:photon.proto
+/photonvision/ApriltagCamera1/pipelineIndexState
+/photonvision/ApriltagCamera1/driverMode
+/photonvision/ApriltagCamera1/latencyMillis
+/photonvision/ApriltagCamera1/hasTarget
+/photonvision/ApriltagCamera1/targetPitch
+/photonvision/ApriltagCamera1/targetArea
+/photonvision/ApriltagCamera1/targetYaw
+/photonvision/ApriltagCamera1/targetPose
+/photonvision/ApriltagCamera1/targetSkew
+/photonvision/ApriltagCamera1/targetPixelsX
+/photonvision/ApriltagCamera1/targetPixelsY
+/photonvision/ApriltagCamera1/heartbeat
+/photonvision/ApriltagCamera1/cameraIntrinsics
+/photonvision/ApriltagCamera1/cameraDistortion
+/photonvision/ApriltagCamera1/rawBytes
+/photonvision/ApriltagCamera1/result_proto

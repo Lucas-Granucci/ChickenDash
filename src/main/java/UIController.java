@@ -309,13 +309,16 @@ public class UIController {
         } else if (value instanceof boolean[]) {
             valueString = Arrays.toString((boolean[]) value);
         } else if (value instanceof List) {
-            valueString = value.toString();  // Lists have good toString()
+            valueString = value.toString();
         } else if (value != null) {
-            valueString = value.toString();  // Handle other types
+            valueString = value.toString();
         } else {
             valueString = "null";
         }
         return valueString;
     }
+
+    // Create graph visualization
+    public static void storeValues() {}
 
 }
