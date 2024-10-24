@@ -3,6 +3,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,7 +15,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -26,6 +29,8 @@ public class UIController {
     private final static double fieldLength = 708.0;
 
     private static GraphicsContext fieldGC;
+
+    private static Map<String, TreeItem<NTDataModel>> treeItemMap = new HashMap<>();
 
     // Declare UI elements as instance variables
     private static Label robotStatus;
@@ -90,16 +95,29 @@ public class UIController {
     }
 
     // Create network table viewer
-    public static TreeView<String> createNetworkTableViewer() {
-        TreeItem<String> rootItem = new TreeItem<>("NetworkTables");
+    public static TreeTableView<NTDataModel> createNetworkTableViewer() {
+
+        TreeTableView<NTDataModel> treeTableView = new TreeTableView<>();
+        TreeItem<NTDataModel> rootItem = new TreeItem<>(new NTDataModel("Key", "Value"));
+        treeTableView.setRoot(rootItem);
         rootItem.setExpanded(true);
 
-        TreeItem<String> exampleItem = new TreeItem<>("ExampleKey: value");
-        rootItem.getChildren().add(exampleItem);
+        // Define columns
+        TreeTableColumn<NTDataModel, String> keyColumn = new TreeTableColumn<>("Key");
+        TreeTableColumn<NTDataModel, String> valueColumn = new TreeTableColumn<>("Value");
 
-        TreeView<String> treeView = new TreeView<>(rootItem);
-        treeView.setPrefWidth(300);
-        return treeView;
+        keyColumn.prefWidthProperty().bind(treeTableView.widthProperty().multiply(0.7));
+        valueColumn.prefWidthProperty().bind(treeTableView.widthProperty().multiply(0.3));
+
+        keyColumn.setCellValueFactory(param -> param.getValue().getValue().keyProperty());
+        valueColumn.setCellValueFactory(param -> param.getValue().getValue().valueProperty());
+
+        treeTableView.getColumns().add(keyColumn);
+        treeTableView.getColumns().add(valueColumn);
+
+        treeTableView.setPrefWidth(350);
+
+        return treeTableView;
     }
 
     // Create control panel (model selector, auto selector, run button)
@@ -188,114 +206,55 @@ public class UIController {
             autoSelector.getItems().addAll(autoSelectionOptions);
             autoSelector.getSelectionModel().selectFirst();
         }
-
         return autoSelector.getValue();
     }
 
-    public static void organizeNTTreeData(TreeItem<String> rootItem, Map<String, Object> masterTable) {
-        // Preserve the expanded states using a recursive method
-        Map<String, Boolean> expandedStates = new HashMap<>();
-        storeExpandedStates(rootItem, expandedStates, "");
+    public static void organizeNTTreeData(TreeTableView<NTDataModel> treeTableView, Map<String, Object> masterTable) {
 
-        // Clear the current children
-        rootItem.getChildren().clear(); 
+        TreeItem<NTDataModel> rootItem = treeTableView.getRoot();
 
-        // Create primary groups
-        TreeItem<String> robotGroup = new TreeItem<>("Robot");
-        TreeItem<String> fmsInfoGroup = new TreeItem<>("FMS Info");
-        TreeItem<String> pidControllersGroup = new TreeItem<>("PID Controllers");
-        TreeItem<String> shooterGroup = new TreeItem<>("Shooter");
-        TreeItem<String> climberGroup = new TreeItem<>("Climber");
-        TreeItem<String> fieldGroup = new TreeItem<>("Field");
-        TreeItem<String> liveWindowGroup = new TreeItem<>("Live Window");
-        TreeItem<String> metadataGroup = new TreeItem<>("Shuffleboard Metadata and Recording");
-        TreeItem<String> schemasGroup = new TreeItem<>("Schemas");
-
-        // Create subgroups for Robot (Swerve Info)
-        TreeItem<String> swerveGroup = new TreeItem<>("Swerve");
-        TreeItem<String> swervePositions = new TreeItem<>("Positions");
-        TreeItem<String> swerveModules = new TreeItem<>("Modules");
-        TreeItem<String> swerveMovementVector = new TreeItem<>("Movement Vector");
-
-        // Create subgroup for Field (Custom Fields)
-        TreeItem<String> customFieldGroup = new TreeItem<>("Custom Field");
-
-        // Iterate over masterTable and sort entries into their respective groups
         for (Map.Entry<String, Object> entry : masterTable.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
             String valueString = decodeValue(value);
 
-            TreeItem<String> itemNode = new TreeItem<>(key + " : " + valueString);
+            if (treeItemMap.containsKey(key)) {
+                TreeItem<NTDataModel> item = treeItemMap.get(key);
+                item.getValue().valueProperty().set(valueString);
 
-            // Sort entries into respective groups
-            if (key.contains("Swerve")) {
-                if (key.contains("Position")) {
-                    swervePositions.getChildren().add(itemNode);
-                } else if (key.contains("Mod")) {
-                    swerveModules.getChildren().add(itemNode);
-                } else if (key.contains("Movement Vector")) {
-                    swerveMovementVector.getChildren().add(itemNode);
-                } else {
-                    swerveGroup.getChildren().add(itemNode);
-                }
-            } else if (key.startsWith("/FMSInfo")) {
-                fmsInfoGroup.getChildren().add(itemNode);
-            } else if (key.contains("PID")) {
-                pidControllersGroup.getChildren().add(itemNode);
-            } else if (key.contains("Shooter")) {
-                shooterGroup.getChildren().add(itemNode);
-            } else if (key.contains("Climber")) {
-                climberGroup.getChildren().add(itemNode);
-            } else if (key.contains("LiveWindow")) {
-                liveWindowGroup.getChildren().add(itemNode);
-            } else if (key.contains(".metadata") || key.contains(".recording")) {
-                metadataGroup.getChildren().add(itemNode);
-            } else if (key.contains(".schema")) {
-                schemasGroup.getChildren().add(itemNode);
             } else {
-                rootItem.getChildren().add(itemNode);
+                TreeItem<NTDataModel> newItem = new TreeItem<>(new NTDataModel(key, valueString));
+                treeItemMap.put(key, newItem);
+                rootItem.getChildren().add(newItem);
             }
         }
 
-        // Add subgroups to their respective parents
-        swerveGroup.getChildren().addAll(Arrays.asList(
-            swervePositions, swerveModules, swerveMovementVector
-        ));
-        fieldGroup.getChildren().add(customFieldGroup);
-
-        // Add primary groups to the root
-        rootItem.getChildren().addAll(Arrays.asList(
-            robotGroup, fmsInfoGroup, pidControllersGroup,
-            shooterGroup, climberGroup, fieldGroup,
-            liveWindowGroup, metadataGroup, schemasGroup
-        ));
-
-        // Add Swerve to Robot
-        robotGroup.getChildren().add(swerveGroup);
-
-        // Restore expanded state for each group after the tree is rebuilt
-        restoreExpandedStates(rootItem, expandedStates, "");
+        treeItemMap.keySet().removeIf(key -> {
+            if (!masterTable.containsKey(key)) {
+                TreeItem<NTDataModel> itemToRemove = treeItemMap.get(key);
+                rootItem.getChildren().remove(itemToRemove);
+                return true;
+            }
+            return false;
+        });
     }
 
-    // Recursive method to store the expanded states of all nodes
-    private static void storeExpandedStates(TreeItem<String> item, Map<String, Boolean> expandedStates, String path) {
-        String currentPath = path.isEmpty() ? item.getValue() : path + "/" + item.getValue();
-        expandedStates.put(currentPath, item.isExpanded()); 
-        for (TreeItem<String> child : item.getChildren()) {
-            storeExpandedStates(child, expandedStates, currentPath); 
-        }
-    }
+    // Tree Item class
+    public static class NTDataModel {
+        private final StringProperty key;
+        private final StringProperty value;
 
-    // Recursive method to restore the expanded states of all nodes
-    private static void restoreExpandedStates(TreeItem<String> item, Map<String, Boolean> expandedStates, String path) {
-        String currentPath = path.isEmpty() ? item.getValue() : path + "/" + item.getValue();
-        Boolean expandedState = expandedStates.get(currentPath);
-        if (expandedState != null) {
-            item.setExpanded(expandedState);
+        public NTDataModel(String key, String value) {
+            this.key = new SimpleStringProperty(key);
+            this.value = new SimpleStringProperty(value);
         }
-        for (TreeItem<String> child : item.getChildren()) {
-            restoreExpandedStates(child, expandedStates, currentPath);
+
+        public StringProperty keyProperty() {
+            return key;
+        }
+
+        public StringProperty valueProperty() {
+            return value;
         }
     }
 

@@ -1,0 +1,170 @@
+/Shuffleboard/SmartDashboard/Auto Selector/selected
+/LiveWindow/.status/LW Enabled
+/Shuffleboard/.metadata/Selected
+/Shuffleboard/.recording/RecordData
+/Shuffleboard/.recording/FileNameFormat
+/photonvision/ApriltagCamera1/driverModeRequest
+/photonvision/ApriltagCamera1/pipelineIndexRequest
+/photonvision/ledModeRequest
+/Shuffleboard/.metadata/Tabs
+/Shuffleboard/SmartDashboard/.type
+/Shuffleboard/Move PID/.type
+/Shuffleboard/Rot PID/.type
+/Shuffleboard/Positions/.type
+/Shuffleboard/Shooter/.type
+/Shuffleboard/Climber/.type
+/Shuffleboard/Move PID/Move P
+/Shuffleboard/Move PID/Move I
+/Shuffleboard/Move PID/Move D
+/Shuffleboard/Move PID/Move Deadband
+/Shuffleboard/Rot PID/Rot P
+/Shuffleboard/Rot PID/Rot I
+/Shuffleboard/Rot PID/Rot D
+/Shuffleboard/Rot PID/Rot Deadband
+/Shuffleboard/Shooter/Top Flywheel RPM
+/Shuffleboard/Shooter/Bottom Flywheel RPM
+/Shuffleboard/Shooter/Flywheel Targeted RPM
+/Shuffleboard/Shooter/Top Flywheel Vector
+/Shuffleboard/Shooter/Bottom Flywheel Vector
+/Shuffleboard/Shooter/Shooter Distance
+/Shuffleboard/Climber/Left Climber State
+/Shuffleboard/Climber/Right Climber State
+/Shuffleboard/Shooter/Pivot Angle
+/Shuffleboard/Shooter/Pivot Target Angle
+/Shuffleboard/Positions/Swerve Position
+/Shuffleboard/SmartDashboard/Field View/.controllable
+/Shuffleboard/SmartDashboard/Field View/.type
+/Shuffleboard/SmartDashboard/Field View/Robot
+/Shuffleboard/SmartDashboard/Custom Field/.controllable
+/Shuffleboard/SmartDashboard/Custom Field/.type
+/Shuffleboard/SmartDashboard/Custom Field/dims
+/Shuffleboard/SmartDashboard/Custom Field/backgroundColor
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod1/x
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod1/y
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod1/fieldSwerveMod1/.type
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod1/fieldSwerveMod1/angle
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod1/fieldSwerveMod1/length
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod1/fieldSwerveMod1/color
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod1/fieldSwerveMod1/weight
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod0/x
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod0/y
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod0/fieldSwerveMod0/.type
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod0/fieldSwerveMod0/angle
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod0/fieldSwerveMod0/length
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod0/fieldSwerveMod0/color
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod0/fieldSwerveMod0/weight
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod3/x
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod3/y
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod3/fieldSwerveMod3/.type
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod3/fieldSwerveMod3/angle
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod3/fieldSwerveMod3/length
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod3/fieldSwerveMod3/color
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod3/fieldSwerveMod3/weight
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod2/x
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod2/y
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod2/fieldSwerveMod2/.type
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod2/fieldSwerveMod2/angle
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod2/fieldSwerveMod2/length
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod2/fieldSwerveMod2/color
+/Shuffleboard/SmartDashboard/Custom Field/fieldSwerveMod2/fieldSwerveMod2/weight
+/Shuffleboard/SmartDashboard/Custom Field/Field Movement Vector/x
+/Shuffleboard/SmartDashboard/Custom Field/Field Movement Vector/y
+/Shuffleboard/SmartDashboard/Custom Field/Field Movement Vector/Field Movement Vector/.type
+/Shuffleboard/SmartDashboard/Custom Field/Field Movement Vector/Field Movement Vector/angle
+/Shuffleboard/SmartDashboard/Custom Field/Field Movement Vector/Field Movement Vector/length
+/Shuffleboard/SmartDashboard/Custom Field/Field Movement Vector/Field Movement Vector/color
+/Shuffleboard/SmartDashboard/Custom Field/Field Movement Vector/Field Movement Vector/weight
+/Shuffleboard/SmartDashboard/Swerve/.controllable
+/Shuffleboard/SmartDashboard/Swerve/.type
+/Shuffleboard/SmartDashboard/Swerve/dims
+/Shuffleboard/SmartDashboard/Swerve/backgroundColor
+/Shuffleboard/SmartDashboard/Swerve/Movement Vector/x
+/Shuffleboard/SmartDashboard/Swerve/Movement Vector/y
+/Shuffleboard/SmartDashboard/Swerve/Movement Vector/Movement Vector/.type
+/Shuffleboard/SmartDashboard/Swerve/Movement Vector/Movement Vector/angle
+/Shuffleboard/SmartDashboard/Swerve/Movement Vector/Movement Vector/length
+/Shuffleboard/SmartDashboard/Swerve/Movement Vector/Movement Vector/color
+/Shuffleboard/SmartDashboard/Swerve/Movement Vector/Movement Vector/weight
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod0/x
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod0/y
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod0/SwerveMod0/.type
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod0/SwerveMod0/angle
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod0/SwerveMod0/length
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod0/SwerveMod0/color
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod0/SwerveMod0/weight
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod1/x
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod1/y
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod1/SwerveMod1/.type
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod1/SwerveMod1/angle
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod1/SwerveMod1/length
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod1/SwerveMod1/color
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod1/SwerveMod1/weight
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod2/x
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod2/y
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod2/SwerveMod2/.type
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod2/SwerveMod2/angle
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod2/SwerveMod2/length
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod2/SwerveMod2/color
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod2/SwerveMod2/weight
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod3/x
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod3/y
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod3/SwerveMod3/.type
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod3/SwerveMod3/angle
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod3/SwerveMod3/length
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod3/SwerveMod3/color
+/Shuffleboard/SmartDashboard/Swerve/SwerveMod3/SwerveMod3/weight
+/Shuffleboard/SmartDashboard/Subsystems/.controllable
+/Shuffleboard/SmartDashboard/Subsystems/.type
+/Shuffleboard/SmartDashboard/Subsystems/dims
+/Shuffleboard/SmartDashboard/Subsystems/backgroundColor
+/Shuffleboard/SmartDashboard/Subsystems/Shooter/x
+/Shuffleboard/SmartDashboard/Subsystems/Shooter/y
+/Shuffleboard/SmartDashboard/Subsystems/Shooter/Shooter/.type
+/Shuffleboard/SmartDashboard/Subsystems/Shooter/Shooter/angle
+/Shuffleboard/SmartDashboard/Subsystems/Shooter/Shooter/length
+/Shuffleboard/SmartDashboard/Subsystems/Shooter/Shooter/color
+/Shuffleboard/SmartDashboard/Subsystems/Shooter/Shooter/weight
+/Shuffleboard/SmartDashboard/Auto Selector/.controllable
+/Shuffleboard/SmartDashboard/Auto Selector/.type
+/Shuffleboard/SmartDashboard/Auto Selector/.instance
+/Shuffleboard/SmartDashboard/Auto Selector/default
+/Shuffleboard/SmartDashboard/Auto Selector/options
+/Shuffleboard/SmartDashboard/Auto Selector/active
+/Shuffleboard/SmartDashboard/Trajectory State/.controllable
+/Shuffleboard/SmartDashboard/Trajectory State/.type
+/Shuffleboard/SmartDashboard/Trajectory State/Robot
+/photonvision/ledModeState
+/photonvision/version
+/photonvision/buildDate
+/photonvision/ApriltagCamera1/inputSaveImgCmd
+/photonvision/ApriltagCamera1/outputSaveImgCmd
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/source
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/description
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/connected
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/streams
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/mode
+/CameraPublisher/photonvision_Port_1187_Input_MJPEG_Server/modes
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/source
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/description
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/connected
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/streams
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/mode
+/CameraPublisher/photonvision_Port_1188_Output_MJPEG_Server/modes
+/.schema/proto:geometry3d.proto
+/.schema/proto:photon.proto
+/photonvision/ApriltagCamera1/pipelineIndexState
+/photonvision/ApriltagCamera1/driverMode
+/photonvision/ApriltagCamera1/latencyMillis
+/photonvision/ApriltagCamera1/hasTarget
+/photonvision/ApriltagCamera1/targetPitch
+/photonvision/ApriltagCamera1/targetArea
+/photonvision/ApriltagCamera1/targetYaw
+/photonvision/ApriltagCamera1/targetPose
+/photonvision/ApriltagCamera1/targetSkew
+/photonvision/ApriltagCamera1/targetPixelsX
+/photonvision/ApriltagCamera1/targetPixelsY
+/photonvision/ApriltagCamera1/heartbeat
+/photonvision/ApriltagCamera1/cameraIntrinsics
+/photonvision/ApriltagCamera1/cameraDistortion
+/photonvision/ApriltagCamera1/rawBytes
+/photonvision/ApriltagCamera1/result_proto

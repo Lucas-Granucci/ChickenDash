@@ -63,7 +63,6 @@ public final class NetworkTableManager {
 
         GenericPublisher publisher = publisherCache.computeIfAbsent(topicName, key -> {
             Topic topic = ntInst.getTopic(topicName);
-            System.out.println(topic.getName());
             return topic.genericPublish(topicType);
         });
 

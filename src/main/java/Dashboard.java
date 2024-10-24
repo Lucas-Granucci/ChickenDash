@@ -8,8 +8,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -31,7 +30,7 @@ public class Dashboard extends Application{
         leftPanel.setPadding(new Insets(10));
 
         // Network Table viewer
-        TreeView<String> networkTableViewer = UIController.createNetworkTableViewer();
+        TreeTableView<UIController.NTDataModel> networkTableViewer = UIController.createNetworkTableViewer();
 
         // Swerve module visualization
         GridPane swerveModuleView = UIController.createSwerveModules();
@@ -60,7 +59,7 @@ public class Dashboard extends Application{
             NetworkTableManager.populateMasterTable();
 
             // Update dashboard on the JavaFX Application Thread
-            Platform.runLater(() -> updateNTTree(networkTableViewer.getRoot()));
+            Platform.runLater(() -> updateNTTree(networkTableViewer));
 
             Platform.runLater(() -> updateRobotPos());
             Platform.runLater(() -> updateStatusBar());
@@ -69,8 +68,8 @@ public class Dashboard extends Application{
         }, 0, 100, TimeUnit.MILLISECONDS);
     }
 
-    private void updateNTTree(TreeItem<String> rootItem) {
-        UIController.organizeNTTreeData(rootItem, NetworkTableManager.getMasterTable());
+    private void updateNTTree(TreeTableView<UIController.NTDataModel> treeTableView) {
+        UIController.organizeNTTreeData(treeTableView, NetworkTableManager.getMasterTable());
     }
 
     private void updateRobotPos() {
