@@ -98,13 +98,13 @@ public class UIController {
     public static TreeTableView<NTDataModel> createNetworkTableViewer() {
 
         TreeTableView<NTDataModel> treeTableView = new TreeTableView<>();
-        TreeItem<NTDataModel> rootItem = new TreeItem<>(new NTDataModel("Key", "Value"));
+        TreeItem<NTDataModel> rootItem = new TreeItem<>(new NTDataModel("NetworkTable", "..."));
         treeTableView.setRoot(rootItem);
         rootItem.setExpanded(true);
 
         // Define columns
-        TreeTableColumn<NTDataModel, String> keyColumn = new TreeTableColumn<>("Key");
-        TreeTableColumn<NTDataModel, String> valueColumn = new TreeTableColumn<>("Value");
+        TreeTableColumn<NTDataModel, String> keyColumn = new TreeTableColumn<>("NT Key");
+        TreeTableColumn<NTDataModel, String> valueColumn = new TreeTableColumn<>("NT Value");
 
         keyColumn.prefWidthProperty().bind(treeTableView.widthProperty().multiply(0.7));
         valueColumn.prefWidthProperty().bind(treeTableView.widthProperty().multiply(0.3));
@@ -126,20 +126,12 @@ public class UIController {
         HBox controlPanel = new HBox(20);
         controlPanel.setPadding(new Insets(10));
 
-        // Mode selector
-        ComboBox<String> modeSelector = new ComboBox<>();
-        modeSelector.getItems().addAll("Disconnected", "Disabled", "Autonomous", "Teleoperated", "Test");
-        modeSelector.setValue("Teleop");
-
         // Auto selector
         autoSelector = new ComboBox<>();
         autoSelector.getItems().addAll("Auto 1", "Auto 2", "Auto 3");
         autoSelector.setValue("Auto 1");
-
-        // Run button
-        Button startButton = new Button("Start");
         
-        controlPanel.getChildren().addAll(new Label("Mode: "), modeSelector, new Label("Auto Routine: "), autoSelector, startButton);
+        controlPanel.getChildren().addAll(new Label("Auto Routine: "), autoSelector);
 
         return controlPanel;
     }
@@ -221,22 +213,19 @@ public class UIController {
             if (treeItemMap.containsKey(key)) {
                 TreeItem<NTDataModel> item = treeItemMap.get(key);
                 item.getValue().valueProperty().set(valueString);
-
             } else {
-                TreeItem<NTDataModel> newItem = new TreeItem<>(new NTDataModel(key, valueString));
-                treeItemMap.put(key, newItem);
-                rootItem.getChildren().add(newItem);
+                createNestedTreeItems(rootItem, key, valueString);
             }
         }
 
-        treeItemMap.keySet().removeIf(key -> {
-            if (!masterTable.containsKey(key)) {
-                TreeItem<NTDataModel> itemToRemove = treeItemMap.get(key);
-                rootItem.getChildren().remove(itemToRemove);
-                return true;
-            }
-            return false;
-        });
+        // treeItemMap.keySet().removeIf(key -> {
+        //     if (!masterTable.containsKey(key)) {
+        //         TreeItem<NTDataModel> itemToRemove = treeItemMap.get(key);
+        //         rootItem.getChildren().remove(itemToRemove);
+        //         return true;
+        //     }
+        //     return false;
+        // });
     }
 
     // Tree Item class
@@ -255,6 +244,72 @@ public class UIController {
 
         public StringProperty valueProperty() {
             return value;
+        }
+    }
+
+    private static void createNestedTreeItems(TreeItem<NTDataModel> rootItem, String key, String value) {
+
+        String trimmedKey = key.replaceFirst("^/", "");
+        String[] keyArray = trimmedKey.split("/", 2);
+
+        String[] filteredKeyArray = Arrays.stream(keyArray)
+                                                .filter(s -> !s.isEmpty())
+                                                .toArray(String[]::new);
+        
+        if (filteredKeyArray.length == 2) {
+            String newEntryName = filteredKeyArray[0];
+            String newKey = filteredKeyArray[1];
+            TreeItem<NTDataModel> item;
+            
+            int indexOfNewKey = key.indexOf(newKey);
+            String currentPath = indexOfNewKey > 0 ? key.substring(0, indexOfNewKey - 1) : key;
+
+            // Check if this path segment already exists
+            if (treeItemMap.containsKey(currentPath)) {
+                item = treeItemMap.get(currentPath);
+            } else {
+                item = new TreeItem<>(new NTDataModel(newEntryName, "..."));
+                treeItemMap.put(currentPath, item);
+                rootItem.getChildren().add(item);
+            }
+            createNestedTreeItems(item, newKey, value);
+            
+
+
+            // if (treeItemMap.containsKey(newEntryName)) {
+            //     item = treeItemMap.get(newEntryName);
+            // } else {
+            //     item = new TreeItem<>(new NTDataModel(newEntryName, "..."));
+            //     treeItemMap.put(newEntryName, item);
+
+            //      if (!rootItem.getChildren().contains(item)) {
+            //         rootItem.getChildren().add(item);
+            //      }
+            // }
+
+            // createNestedTreeItems(item, newKey, value);
+
+        } else if (filteredKeyArray.length == 1) {
+            String entryName = filteredKeyArray[0];
+
+            // For leaf nodes, use full key for map
+            if (treeItemMap.containsKey(key)) {
+                TreeItem<NTDataModel> existingItem = treeItemMap.get(key);
+                existingItem.getValue().valueProperty().set(value);
+            } else {
+                TreeItem<NTDataModel> newItem = new TreeItem<>(new NTDataModel(entryName, value));
+                treeItemMap.put(key, newItem);
+                rootItem.getChildren().add(newItem);
+            }
+            
+            // if (treeItemMap.containsKey(entryName)) {
+            //     TreeItem<NTDataModel> existingItem = treeItemMap.get(key);
+            //     existingItem.getValue().valueProperty().set(value);
+            // } else {
+            //     TreeItem<NTDataModel> newItem = new TreeItem<>(new NTDataModel(entryName, value));
+            //     treeItemMap.put(key, newItem);
+            //     rootItem.getChildren().add(newItem);
+            // }
         }
     }
 
