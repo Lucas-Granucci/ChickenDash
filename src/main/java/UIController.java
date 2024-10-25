@@ -217,15 +217,6 @@ public class UIController {
                 createNestedTreeItems(rootItem, key, valueString);
             }
         }
-
-        // treeItemMap.keySet().removeIf(key -> {
-        //     if (!masterTable.containsKey(key)) {
-        //         TreeItem<NTDataModel> itemToRemove = treeItemMap.get(key);
-        //         rootItem.getChildren().remove(itemToRemove);
-        //         return true;
-        //     }
-        //     return false;
-        // });
     }
 
     // Tree Item class
@@ -273,21 +264,6 @@ public class UIController {
                 rootItem.getChildren().add(item);
             }
             createNestedTreeItems(item, newKey, value);
-            
-
-
-            // if (treeItemMap.containsKey(newEntryName)) {
-            //     item = treeItemMap.get(newEntryName);
-            // } else {
-            //     item = new TreeItem<>(new NTDataModel(newEntryName, "..."));
-            //     treeItemMap.put(newEntryName, item);
-
-            //      if (!rootItem.getChildren().contains(item)) {
-            //         rootItem.getChildren().add(item);
-            //      }
-            // }
-
-            // createNestedTreeItems(item, newKey, value);
 
         } else if (filteredKeyArray.length == 1) {
             String entryName = filteredKeyArray[0];
@@ -301,15 +277,6 @@ public class UIController {
                 treeItemMap.put(key, newItem);
                 rootItem.getChildren().add(newItem);
             }
-            
-            // if (treeItemMap.containsKey(entryName)) {
-            //     TreeItem<NTDataModel> existingItem = treeItemMap.get(key);
-            //     existingItem.getValue().valueProperty().set(value);
-            // } else {
-            //     TreeItem<NTDataModel> newItem = new TreeItem<>(new NTDataModel(entryName, value));
-            //     treeItemMap.put(key, newItem);
-            //     rootItem.getChildren().add(newItem);
-            // }
         }
     }
 
