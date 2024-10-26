@@ -1,4 +1,6 @@
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,19 +12,26 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class UIController {
 
@@ -36,6 +45,17 @@ public class UIController {
     private static Label robotStatus;
     private static Button connectButton;
     private static ComboBox<String> autoSelector;
+    private static GridPane chartGrid;
+
+    private static TreeTableView<NTDataModel> treeTableView;
+
+    // Declare values to track for graphing
+    private static final int MAX_DATA_POINTS = 10;
+
+    private static Map<String, XYChart.Series<String, Number>> trackedValues = new HashMap<>();
+    private static Map<String, LineChart<String, Number>> activeCharts = new HashMap<>();
+
+    final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 
     // **************************** DISPLAY ELEMENTS **************************** //
 
@@ -97,7 +117,9 @@ public class UIController {
     // Create network table viewer
     public static TreeTableView<NTDataModel> createNetworkTableViewer() {
 
-        TreeTableView<NTDataModel> treeTableView = new TreeTableView<>();
+        treeTableView = new TreeTableView<>();
+        treeTableView.setPrefWidth(350);
+
         TreeItem<NTDataModel> rootItem = new TreeItem<>(new NTDataModel("NetworkTable", "..."));
         treeTableView.setRoot(rootItem);
         rootItem.setExpanded(true);
@@ -115,8 +137,44 @@ public class UIController {
         treeTableView.getColumns().add(keyColumn);
         treeTableView.getColumns().add(valueColumn);
 
-        treeTableView.setPrefWidth(350);
+        // Setup selection context menu
+        ContextMenu selectionContextMenu = new ContextMenu();
+        
+        MenuItem startTrackingItem = new MenuItem("Start Tracking Value");
 
+        MenuItem stopTrackingItem = new MenuItem("Stop Tracking Value");
+
+        selectionContextMenu.getItems().addAll(startTrackingItem, stopTrackingItem);
+
+        // Setup click events
+        treeTableView.setRowFactory(tv -> {
+            TreeTableRow<NTDataModel> row = new TreeTableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.SECONDARY && !row.isEmpty()) {
+                    NTDataModel selectedItem = row.getItem();
+                    String selectedValue = selectedItem.valueProperty().getValue();
+
+                    TreeItem<NTDataModel> treeItem = row.getTreeItem();
+                    if (treeItem != null) {
+                        String path = getPath(treeItem);
+
+                        if (!selectedValue.equals("...") && canBeDouble(selectedValue)) {
+
+                        startTrackingItem.setOnAction( contextEvent -> {
+                            trackedValues.put(path, new XYChart.Series<String, Number>());
+                        });
+
+                        stopTrackingItem.setOnAction( contextEvent -> {
+                            trackedValues.remove(path);
+                        });
+
+                        selectionContextMenu.show(row, event.getScreenX(), event.getScreenY());
+                    }
+                    }
+                }
+            });
+            return row;
+        });
         return treeTableView;
     }
 
@@ -137,20 +195,13 @@ public class UIController {
     }
 
     // Create swerve module visualiztaion
-    public static GridPane createSwerveModules() {
-        GridPane swerveGrid = new GridPane();
-        swerveGrid.setHgap(10);
-        swerveGrid.setVgap(10);
-        swerveGrid.setPadding(new Insets(10));
+    public static GridPane createValueTrackingCharts() {
+        chartGrid = new GridPane();
+        chartGrid.setHgap(10);
+        chartGrid.setVgap(10);
+        chartGrid.setPadding(new Insets(10));
 
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++){
-                Rectangle module = new Rectangle(50, 50, Color.DARKGRAY);
-                swerveGrid.add(module, i, j);
-            }
-        }
-
-        return swerveGrid;
+        return chartGrid;
     }
 
     // **************************** UPDATE ELEMENTS **************************** //
@@ -280,6 +331,73 @@ public class UIController {
         }
     }
 
+    // Track all values
+    public static void updateTrackedValues() {
+
+        int i = 0;
+        for (Map.Entry<String, XYChart.Series<String, Number>> entry : trackedValues.entrySet()) {
+
+            String topicName = entry.getKey();
+            XYChart.Series<String, Number> currentValuesSeries = entry.getValue();
+
+            LineChart<String, Number> lineChart = activeCharts.get(topicName);
+            if (lineChart == null) {
+                // Create chart
+                CategoryAxis xAxis = new CategoryAxis();
+                NumberAxis yAxis = new NumberAxis();
+
+                xAxis.setAnimated(false);
+                yAxis.setAnimated(false);
+
+                lineChart = new LineChart<>(xAxis, yAxis);
+                lineChart.getData().add(currentValuesSeries);
+
+                lineChart.setTitle(topicName);
+                lineChart.setStyle("-fx-font-size: " + 6 + "px;");
+                lineChart.setAnimated(false);
+                lineChart.setMaxHeight(50);
+
+                // Add to display and activeCharts
+                chartGrid.add(lineChart, i++, 0);
+                activeCharts.put(topicName, lineChart);
+            }
+
+            // Get new NT value and add to series
+            Object currentValue = NetworkTableManager.getValue(topicName);
+
+            Date now = new Date();
+            currentValuesSeries.getData().add(new XYChart.Data<>(simpleDateFormat.format(now), (double) currentValue));
+
+            // Trim series if it's too long
+            if (currentValuesSeries.getData().size() > MAX_DATA_POINTS) {
+                currentValuesSeries.getData().remove(0);
+            }
+            trackedValues.put(topicName, currentValuesSeries);
+        }
+
+        activeCharts.keySet().removeIf(topicName -> {
+            if (!trackedValues.containsKey(topicName)) {
+                LineChart<String, Number> chartToRemove = activeCharts.get(topicName);
+                chartGrid.getChildren().remove(chartToRemove);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    // **************************** UTILS **************************** //
+
+    private static String getPath(TreeItem<NTDataModel> item) {
+        StringBuilder pathBuilder = new StringBuilder();
+        TreeItem<NTDataModel> current = item;
+
+        while (current != null) {
+            pathBuilder.insert(0, "/" + current.getValue().keyProperty().getValue());
+            current = current.getParent();
+        }
+        return pathBuilder.length() > 0 ? pathBuilder.substring(1).replace("NetworkTable", "") : "";
+    }
+
     // Helper method to decode entries
     private static String decodeValue(Object value) {
         String valueString;
@@ -299,7 +417,13 @@ public class UIController {
         return valueString;
     }
 
-    // Create graph visualization
-    public static void storeValues() {}
-
+    // Helper method to determine if value can be a double
+    public static boolean canBeDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }

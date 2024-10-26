@@ -33,7 +33,7 @@ public class Dashboard extends Application{
         TreeTableView<UIController.NTDataModel> networkTableViewer = UIController.createNetworkTableViewer();
 
         // Swerve module visualization
-        GridPane swerveModuleView = UIController.createSwerveModules();
+        GridPane trackedValuesView = UIController.createValueTrackingCharts();
 
         // Main layout (splitPane)
         SplitPane mainSplitPane = new SplitPane();
@@ -44,7 +44,7 @@ public class Dashboard extends Application{
         BorderPane root = new BorderPane();
         root.setTop(topBar);
         root.setCenter(mainSplitPane);
-        root.setBottom(swerveModuleView);
+        root.setBottom(trackedValuesView);
 
         // Scene setup
         Scene scene = new Scene(root, 1200, 800);
@@ -61,6 +61,8 @@ public class Dashboard extends Application{
             // Update dashboard on the JavaFX Application Thread
             Platform.runLater(() -> updateNTTree(networkTableViewer));
 
+            Platform.runLater(() -> updateTrackedValues());
+
             Platform.runLater(() -> updateRobotPos());
             Platform.runLater(() -> updateStatusBar());
             Platform.runLater(() -> updateAutoSelector());
@@ -70,6 +72,10 @@ public class Dashboard extends Application{
 
     private void updateNTTree(TreeTableView<UIController.NTDataModel> treeTableView) {
         UIController.organizeNTTreeData(treeTableView, NetworkTableManager.getMasterTable());
+    }
+
+    private void updateTrackedValues() {
+        UIController.updateTrackedValues();
     }
 
     private void updateRobotPos() {
