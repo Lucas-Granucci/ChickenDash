@@ -55,7 +55,7 @@ public class UIController {
     private static Map<String, XYChart.Series<String, Number>> trackedValues = new HashMap<>();
     private static Map<String, LineChart<String, Number>> activeCharts = new HashMap<>();
 
-    final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+    final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ss.SSS");
 
     // **************************** DISPLAY ELEMENTS **************************** //
 
@@ -334,7 +334,11 @@ public class UIController {
     // Track all values
     public static void updateTrackedValues() {
 
-        int i = 0;
+        final int COLUMNS = 6;
+
+        int row = 0;
+        int col = 0;
+
         for (Map.Entry<String, XYChart.Series<String, Number>> entry : trackedValues.entrySet()) {
 
             String topicName = entry.getKey();
@@ -354,11 +358,18 @@ public class UIController {
 
                 lineChart.setTitle(topicName);
                 lineChart.setStyle("-fx-font-size: " + 6 + "px;");
+                lineChart.setCreateSymbols(false);
                 lineChart.setAnimated(false);
                 lineChart.setMaxHeight(50);
 
+                currentValuesSeries.getNode().setStyle("-fx-stroke: blue; -fx-stroke-width: 2px;");
+
+                // Calculate grid position
+                col = activeCharts.size() % COLUMNS;
+                row = activeCharts.size() / COLUMNS;
+
                 // Add to display and activeCharts
-                chartGrid.add(lineChart, i++, 0);
+                chartGrid.add(lineChart, col, row);
                 activeCharts.put(topicName, lineChart);
             }
 
@@ -379,6 +390,18 @@ public class UIController {
             if (!trackedValues.containsKey(topicName)) {
                 LineChart<String, Number> chartToRemove = activeCharts.get(topicName);
                 chartGrid.getChildren().remove(chartToRemove);
+
+                // Reposition remaining charts to fill gaps
+                int index = 0;
+                for (LineChart<String, Number> chart : activeCharts.values()) {
+                    if (chart != chartToRemove) {
+                        int newCol = index % COLUMNS;
+                        int newRow = index / COLUMNS;
+                        GridPane.setColumnIndex(chart, newCol);
+                        GridPane.setRowIndex(chart, newRow);
+                        index++;
+                    }
+                }
                 return true;
             }
             return false;
