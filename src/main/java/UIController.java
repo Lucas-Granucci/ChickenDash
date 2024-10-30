@@ -265,7 +265,7 @@ public class UIController {
                 TreeItem<NTDataModel> item = treeItemMap.get(key);
                 item.getValue().valueProperty().set(valueString);
             } else {
-                createNestedTreeItems(rootItem, key, valueString);
+                createNestedTreeItems(rootItem, key, valueString, "");
             }
         }
     }
@@ -289,7 +289,7 @@ public class UIController {
         }
     }
 
-    private static void createNestedTreeItems(TreeItem<NTDataModel> rootItem, String key, String value) {
+    private static void createNestedTreeItems(TreeItem<NTDataModel> rootItem, String key, String value, String currentPath) {
 
         String trimmedKey = key.replaceFirst("^/", "");
         String[] keyArray = trimmedKey.split("/", 2);
@@ -303,29 +303,30 @@ public class UIController {
             String newKey = filteredKeyArray[1];
             TreeItem<NTDataModel> item;
             
-            int indexOfNewKey = key.indexOf(newKey);
-            String currentPath = indexOfNewKey > 0 ? key.substring(0, indexOfNewKey - 1) : key;
+            String newPath = currentPath.isEmpty() ? newEntryName : currentPath + "/" + newEntryName;
 
             // Check if this path segment already exists
-            if (treeItemMap.containsKey(currentPath)) {
-                item = treeItemMap.get(currentPath);
+            if (treeItemMap.containsKey(newPath)) {
+                item = treeItemMap.get(newPath);
             } else {
                 item = new TreeItem<>(new NTDataModel(newEntryName, "..."));
-                treeItemMap.put(currentPath, item);
+                treeItemMap.put(newPath, item);
                 rootItem.getChildren().add(item);
             }
-            createNestedTreeItems(item, newKey, value);
+            createNestedTreeItems(item, newKey, value, newPath);
 
         } else if (filteredKeyArray.length == 1) {
             String entryName = filteredKeyArray[0];
+            String fullPath = currentPath.isEmpty() ? entryName : currentPath + "/" + entryName;
+
 
             // For leaf nodes, use full key for map
-            if (treeItemMap.containsKey(key)) {
-                TreeItem<NTDataModel> existingItem = treeItemMap.get(key);
+            if (treeItemMap.containsKey(fullPath)) {
+                TreeItem<NTDataModel> existingItem = treeItemMap.get(fullPath);
                 existingItem.getValue().valueProperty().set(value);
             } else {
                 TreeItem<NTDataModel> newItem = new TreeItem<>(new NTDataModel(entryName, value));
-                treeItemMap.put(key, newItem);
+                treeItemMap.put(fullPath, newItem);
                 rootItem.getChildren().add(newItem);
             }
         }
